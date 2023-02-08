@@ -9,5 +9,18 @@ cmake_minimum_required(VERSION 3.10)
 
 project(MemoryPool VERSION 1.0.0 LANGUAGES C CXX)
 
+set ( CMAKE_CXX_STANDARD 11)
+set ( CMAKE_CXX_STANDARD_REQUIRED ON )
+set ( CMAKE_CXX_EXTENSIONS ON )
+
+set ( TEST_LIBRARY_NAME testLib )
+set ( EXECUTABLE_NAME Executable )
+
+option(COMPILE_EXECUTABLE "Whether to compile the executable" OFF)
 add_subdirectory(testLib)
-add_subdirectory(app)
+add_subdirectory(cMemoryPoolLib)
+if(COMPILE_EXECUTABLE )
+    add_subdirectory(app)
+else()
+    message("W/o exe. compiling ")
+endif()
