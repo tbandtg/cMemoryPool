@@ -14,12 +14,16 @@ set ( CMAKE_CXX_STANDARD_REQUIRED ON )
 set ( CMAKE_CXX_EXTENSIONS ON )
 
 set ( TEST_LIBRARY_NAME testLib )
+set ( COMPILE_MEMORY_POOL_LIBRARY_STATIC ON )
+set ( MEMORY_POOL_LIBRARY_NAME cMemoryPoolLib )
 set ( EXECUTABLE_NAME Executable )
 
-option(COMPILE_EXECUTABLE "Whether to compile the executable" OFF)
+option(COMPILE_EXECUTABLE "Whether to compile the executable" ON)
 add_subdirectory(testLib)
 add_subdirectory(cMemoryPoolLib)
-if(COMPILE_EXECUTABLE )
+
+
+if( COMPILE_EXECUTABLE )
     add_subdirectory(app)
 else()
     message("W/o exe. compiling ")

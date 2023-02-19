@@ -17,16 +17,20 @@ extern "C" { // Access code from C++
     #define DEF_FALSE                                                      0x00
 #endif
 
-
+#ifndef SMALL_POOL_BLOCK_SIZE_BYTES
 /** How many bytes are in each small pool block */
-#define SMALL_POOL_BLOCK_SIZE_BYTES                                           32
+    #define SMALL_POOL_BLOCK_SIZE_BYTES                                      32
+#endif 
 
+#ifndef SMALL_POOL_BLOCK_COUNT
 /** How many small blocks are in the pool */
-#define SMALL_POOL_BLOCK_COUNT                                               100 
+    #define SMALL_POOL_BLOCK_COUNT                                          100 
+#endif
 
-
+#ifndef MEDIUM_POOL_BLOCK_SIZE_BYTES
 /** How many bytes are in a medium memory pool block */
-#define MEDIUM_POOL_BLOCK_SIZE_BYTES                                         128
+    #define MEDIUM_POOL_BLOCK_SIZE_BYTES                                    128
+#endif
 
 /** How many medium pool blocks */
 #define MEDIUM_POOL_BLOCK_COUNT                                               16 

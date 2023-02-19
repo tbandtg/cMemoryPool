@@ -12,6 +12,7 @@ extern "C" { // Access code from C++
 typedef enum
 {
     MEMORY_POOL_ERROR_NONE                       = 0x00,
+    MEMORY_POOL_NULL_PTR_ERROR
 } eMemoryPoolErrorCodes_t;
 
 #if defined(__cplusplus)
