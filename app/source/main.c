@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include "my_lib.h"
-#include "cMemoryPool.h"
+#include "memoryPoolImplementation.h"
 
 /**
  * @brief Program Main entry for testing libraries.

@@ -4,10 +4,11 @@ add_library( ${MEMORY_POOL_LIBRARY_NAME} STATIC
                                          source/cMemoryPool.c 
                                          source/cSmallPool.c 
                                          source/cMediumPool.c )
-target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE .)
-target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE include)
-target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE source)
-set_target_properties(${MEMORY_POOL_LIBRARY_NAME} PROPERTIES PUBLIC_HEADER include/cMemoryPool.h)
+add_subdirectory(include)
+add_subdirectory("public include")
+target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE "include")
+target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PUBLIC "public include")
+target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE "source")
 else()
 cmake_minimum_required(VERSION 3.10)
 set ( MEMORY_POOL_LIBRARY_NAME cMemoryPoolLib )
