@@ -19,24 +19,6 @@ extern "C" { // Access code from C++
 #include "cMemoryPoolConfig.h"
 #include "cMemoryPool.h"
 
-/** Memory Pool Control Strucure */
-typedef struct
-{
-    /** Info Struct for the Pool */
-    sMemoryPoolInfo_t * _pPoolInfo;
-
-    /** Pointer to the actual pool */
-    uint8_t * _pPoolData;
-
-    /** Block Count of the Pool */
-    uint32_t _poolBlockCount;
-
-    /** Pool Block Size in bytes */
-    uint32_t _poolBlockSizeBytes;
-
-    /** Pool Free Count */
-    uint32_t _poolFreeCount;
-} sMemoryPoolControl_t;
 
 
 #if defined(__cplusplus)

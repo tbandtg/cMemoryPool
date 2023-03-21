@@ -26,13 +26,31 @@ typedef struct
     bool _inUse;
 } sMemoryPoolInfo_t;
 
-/** Init Memory Pools */
-extern uint16_t initMemoryPool( uint8_t * const pSmallPoolData, 
-                          uint32_t const smallPoolBlockSize, 
-                          uint32_t const smallPoolBlockCount, 
-                          sMemoryPoolInfo_t * const pSmallPoolInfo );
+/** Memory Pool Control Strucure */
+typedef struct
+{
+    /** Info Struct for the Pool */
+    sMemoryPoolInfo_t _poolInfo;
 
+    /** Block Count of the Pool */
+    uint32_t _poolBlockCount;
 
+    /** Pool Block Size in bytes */
+    uint32_t _poolBlockSizeBytes;
+
+    /** Pool Free Count */
+    uint32_t _poolFreeCount;
+} sMemoryPoolControl_t;
+
+#define EMPTY_CONTROL_STRUCT { { NULL, false }, 0U, 0U, 0U, }
+
+/** Initialize a single memory pool  */
+extern uint16_t initMemoryPool( sMemoryPoolControl_t * const pPoolControl,
+                                uint32_t const poolControlIndex,
+                                sMemoryPoolInfo_t * const pDataInfo );
+
+/** Initalize the controls for all of the pools */
+extern uint16_t initMenoryPoolControls( );
 #if defined(__cplusplus)
 }
 #endif
