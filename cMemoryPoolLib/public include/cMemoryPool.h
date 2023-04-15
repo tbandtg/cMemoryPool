@@ -15,7 +15,6 @@ extern "C" { // Access code from C++
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "eMemoryPoolErrorCodes.h"
 #include "cMemoryPoolConfig.h"
 
 /** Data Structure for a memory Pool control object */
@@ -45,12 +44,13 @@ typedef struct
 #define EMPTY_CONTROL_STRUCT { { NULL, false }, 0U, 0U, 0U, }
 
 /** Initialize a single memory pool  */
-extern uint16_t initMemoryPool( sMemoryPoolControl_t * const pPoolControl,
-                                uint32_t const poolControlIndex,
-                                sMemoryPoolInfo_t * const pDataInfo );
+extern uint16_t initMemoryPool( void * const poolData, 
+                         uint32_t const poolBlockSize,
+                         uint32_t const poolBlockCount );
 
 /** Initalize the controls for all of the pools */
-extern uint16_t initMenoryPoolControls( );
+extern uint16_t initMemoryPools( sMemoryPoolControl_t * const * const poolControls, 
+                          uint32_t poolCount );
 #if defined(__cplusplus)
 }
 #endif

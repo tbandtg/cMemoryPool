@@ -16,8 +16,8 @@ extern "C" { // Access code from C++
 #include <stdbool.h>
 
 #include "eMemoryPoolErrorCodes.h"
-#include "cMemoryPoolConfig.h"
-#include "cMemoryPool.h"
+#include "../public include/cMemoryPoolConfig.h"
+#include "../public include/cMemoryPool.h"
 
 
 
