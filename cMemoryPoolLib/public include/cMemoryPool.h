@@ -50,7 +50,13 @@ extern uint16_t initMemoryPool( void * const poolData,
 
 /** Initalize the controls for all of the pools */
 extern uint16_t initMemoryPools( sMemoryPoolControl_t * const * const poolControls, 
-                          uint32_t poolCount );
+                                uint32_t poolCount );
+
+/** Grab a block */
+extern uint16_t memoryPoolMalloc( void ** pData, uint32_t const sizeInBytes );
+
+/** Free up a given block */
+extern uint16_t memoryPoolFree( void ** pData );
 #if defined(__cplusplus)
 }
 #endif

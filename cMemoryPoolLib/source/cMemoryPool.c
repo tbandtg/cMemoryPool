@@ -28,7 +28,7 @@ static sMemoryPoolDriverControl_t THIS = { NULL, MEMORY_POOLS_COUNT, false, 0 };
 
 /** Has the The Memory Pool Driver been initialized */
 /**
- * @brief Initialized the Memory Pools.
+ * @brief Initialized overall control for the memory pool driver
  * 
  * @return uint16_t 
  */
@@ -65,32 +65,59 @@ uint16_t initMemoryPool( void * const poolData,
     /* Sanity check incoming data pointer to not be NULL */
     if( NULL != poolData )
     {
-        if( true == THIS._driverInitialized )
-        {           
-            (void)memset( poolData, 0x00, ( poolBlockSize * poolBlockCount ) );    
-            retValue = MEMORY_POOL_ERROR_NONE;
-            for( int32_t i =0; i < THIS._poolCount; i++ )
+        retValue = MEMORY_POOL_DRIVER_NOT_INIT;
+        /* Do not initalize a pool if the pool control has not been initialized */
+        if ( true == THIS._driverInitialized )
+        {
+            retValue = MEMORY_POOL_NO_FREE_POOL_LOCATION;
+            /* Sanity Check the Pool Count */
+            if( 0 < THIS._poolCount )
             {
-                if( false == THIS._controlArray[i]->_poolInfo._inUse )
-                {
-                    /* This is the proper place for this new QUEUE*/
-                    THIS._controlArray[i]->_poolBlockCount = poolBlockCount;
-                    THIS._controlArray[i]->_poolBlockSizeBytes = poolBlockSize;
-                    THIS._controlArray[i]->_poolFreeCount = poolBlockCount;
-                    THIS._controlArray[i]->_poolInfo._inUse = true;
-                    THIS._controlArray[i]->_poolInfo._pData = poolData;
-                    
-                    break;
-                }
-                else
-                {
-                    if( THIS._controlArray[i]->_poolBlockSizeBytes < poolBlockSize )
+                /* Enssure that there is an available que slot */
+                if( false == THIS._controlArray[ THIS._poolCount - 1 ]->_poolInfo._inUse ) 
+                {          
+                    (void)memset( poolData, 0x00, ( poolBlockSize * poolBlockCount ) );    
+            
+                    for( int32_t i = 0; i < THIS._poolCount; i++ )
                     {
-                        for( int32_t j = i; j < THIS._poolCount; j++ )
+                        if( false == THIS._controlArray[i]->_poolInfo._inUse )
                         {
-                            ;
+                            retValue = MEMORY_POOL_ERROR_NONE;
+                            /* This is the proper place for this new QUEUE*/
+                            THIS._controlArray[i]->_poolBlockCount = poolBlockCount;
+                            THIS._controlArray[i]->_poolBlockSizeBytes = poolBlockSize;
+                            THIS._controlArray[i]->_poolFreeCount = poolBlockCount;
+                            THIS._controlArray[i]->_poolInfo._inUse = true;
+                            THIS._controlArray[i]->_poolInfo._pData = poolData;
+                            THIS._poolsInUseCount++;
+                            break;
                         }
-                    } 
+                        else
+                        {
+                            if( THIS._controlArray[i]->_poolBlockSizeBytes < poolBlockSize )
+                            {
+                                for( int32_t j = ( THIS._poolCount - 2 ); j > i; j++ )
+                                {
+                                    if( true == THIS._controlArray[j]->_poolInfo._inUse )
+                                    {
+                                        (void)memcpy( ( void* )THIS._controlArray[j + 1], 
+                                                    ( void* )THIS._controlArray[j], 
+                                                    sizeof( sMemoryPoolControl_t ) );
+                                    }
+                                    
+                                }
+                                retValue = MEMORY_POOL_ERROR_NONE;
+                                /* This is the proper place for this new QUEUE*/
+                                THIS._controlArray[i]->_poolBlockCount = poolBlockCount;
+                                THIS._controlArray[i]->_poolBlockSizeBytes = poolBlockSize;
+                                THIS._controlArray[i]->_poolFreeCount = poolBlockCount;
+                                THIS._controlArray[i]->_poolInfo._inUse = true;
+                                THIS._controlArray[i]->_poolInfo._pData = poolData;
+                                THIS._poolsInUseCount++;
+                                break;
+                            } 
+                        }
+                    }
                 }
             }
         }
