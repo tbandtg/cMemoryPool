@@ -123,6 +123,5 @@ uint16_t initMemoryPool( void * const poolData,
         }
     }
 
-
     return( retValue );
 }
