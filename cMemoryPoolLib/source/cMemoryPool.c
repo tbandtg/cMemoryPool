@@ -71,19 +71,21 @@ uint16_t initMemoryPool( void * const poolData,
         {
             retValue = MEMORY_POOL_NO_FREE_POOL_LOCATION;
             /* Sanity Check the Pool Count */
-            if( 0 < THIS._poolCount )
+            if( _poolsInUseCount < THIS._poolCount )
             {
-                /* Enssure that there is an available que slot */
+                /* Enssure that there is an available pool slot */
                 if( false == THIS._controlArray[ THIS._poolCount - 1 ]->_poolInfo._inUse ) 
                 {          
                     (void)memset( poolData, 0x00, ( poolBlockSize * poolBlockCount ) );    
             
+                    /* Loop through and find the place for the new pool */
                     for( int32_t i = 0; i < THIS._poolCount; i++ )
                     {
+                        /* Found a free spot. */
                         if( false == THIS._controlArray[i]->_poolInfo._inUse )
                         {
                             retValue = MEMORY_POOL_ERROR_NONE;
-                            /* This is the proper place for this new QUEUE*/
+                            /* This is the proper place for this new pool*/
                             THIS._controlArray[i]->_poolBlockCount = poolBlockCount;
                             THIS._controlArray[i]->_poolBlockSizeBytes = poolBlockSize;
                             THIS._controlArray[i]->_poolFreeCount = poolBlockCount;
