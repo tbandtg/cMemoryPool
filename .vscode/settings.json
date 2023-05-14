@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "cmemorypool.h": "c"
+        "cmemorypool.h": "c",
+        "memorypoolimplementation.h": "c"
     }
 }

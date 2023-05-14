@@ -32,8 +32,8 @@ static sMemoryPoolDriverControl_t THIS = { NULL, MEMORY_POOLS_COUNT, false, 0 };
  * 
  * @return uint16_t 
  */
-uint16_t initMemoryPools( sMemoryPoolControl_t * const * const poolControls, 
-                          uint32_t poolCount )
+uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls, 
+                          uint32_t const poolCount )
 {
     
     eMemoryPoolErrorCodes_t retValue = MEMORY_POOL_ERROR_NONE;
@@ -125,3 +125,4 @@ uint16_t initMemoryPool( void * const poolData,
 
     return( retValue );
 }
+
