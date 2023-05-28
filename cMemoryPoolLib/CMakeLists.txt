@@ -1,9 +1,7 @@
 
 if( COMPILE_MEMORY_POOL_LIBRARY_STATIC )
 add_library( ${MEMORY_POOL_LIBRARY_NAME} STATIC 
-                                         source/cMemoryPool.c 
-                                         source/cSmallPool.c 
-                                         source/cMediumPool.c )
+                                         source/cMemoryPool.c )
 add_subdirectory(include)
 add_subdirectory("public include")
 target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE "include")
@@ -19,9 +17,7 @@ set ( CMAKE_CXX_STANDARD_REQUIRED ON )
 set ( CMAKE_CXX_EXTENSIONS ON )
 include(GNUInstallDirs)
 add_library( ${MEMORY_POOL_LIBRARY_NAME} SHARED 
-                                         source/cMemoryPool.c 
-                                         source/cSmallPool.c 
-                                         source/cMediumPool.c )
+                                         source/cMemoryPool.c )
 set_target_properties(${MEMORY_POOL_LIBRARY_NAME} PROPERTIES SOVERSION 1)
 set_target_properties(${MEMORY_POOL_LIBRARY_NAME} PROPERTIES PUBLIC_HEADER cMemoryPool.h)
 target_include_directories(${MEMORY_POOL_LIBRARY_NAME} PRIVATE .)
