@@ -26,7 +26,7 @@ typedef struct
 } sMemoryPoolInfo_t;
 
 /** Memory Pool Control Strucure */
-typedef struct
+typedef struct sMemoryPoolControl_s
 {
     /** Info Struct for the Pool */
     sMemoryPoolInfo_t _poolInfo;
@@ -50,7 +50,7 @@ extern uint16_t initMemoryPool( void * const poolData,
 
 /** Initalize the controls for all of the pools */
 extern uint16_t initMemoryPools( sMemoryPoolControl_t * *  poolControls, 
-                                uint32_t const poolCount );
+                                 uint32_t const poolCount );
 
 /** Grab a block */
 extern uint16_t memoryPoolMalloc( void ** pData, 
@@ -59,7 +59,14 @@ extern uint16_t memoryPoolMalloc( void ** pData,
                                   bool const preferLargerSpace );
 
 /** Free up a given block */
-extern uint16_t memoryPoolFree( void ** pData );
+extern uint16_t memoryPoolFree( void ** pData ); 
+
+/** Get the count of pools in the system */
+extern int8_t getPoolCount( void );
+
+/** Get the count of uninitialized pools in the system */
+extern int8_t getUninitializedPoolCount( void );
+
 #if defined(__cplusplus)
 }
 #endif

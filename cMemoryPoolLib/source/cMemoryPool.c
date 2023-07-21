@@ -17,10 +17,10 @@ static sMemoryPoolControl_t controlArray[ MEMORY_POOLS_COUNT ];
 
 typedef struct
 {
-    sMemoryPoolControl_t ** _controlArray;
-    uint8_t _poolCount;
-    bool  _driverInitialized;
-    int8_t _poolsInUseCount;
+    sMemoryPoolControl_t ** _controlArray; /* Array of control sturctures for the pools */
+    int8_t _poolCount;                     /* Number of pools also the length of the above array */
+    bool  _driverInitialized;              /* Whether or not this driver has been initialized */
+    int8_t _poolsInUseCount;               /* How many pools have been initialized S*/
 } sMemoryPoolDriverControl_t;
 
 /** THIS pointer to Array of Memory Pool controls */
@@ -30,8 +30,8 @@ static sMemoryPoolDriverControl_t THIS = { NULL, MEMORY_POOLS_COUNT, false, 0 };
 /**
  * @brief Initialized overall control for the memory pool driver
  * 
- * @return uint16_t 
- */
+ * @return an error uint16_t code if successfull;
+ */ 
 uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls, 
                           uint32_t const poolCount )
 {
@@ -47,7 +47,7 @@ uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls,
         }
         else
         {
-            THIS._controlArray = &controlArray;
+            THIS._controlArray = (sMemoryPoolControl_t**)&controlArray;
         }
         THIS._driverInitialized = true;
     }
@@ -55,7 +55,11 @@ uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls,
     return ( (uint16_t)retValue );
 }
 
-
+/**
+ * @brief Initialize a memory pool with a given data array and size
+ * 
+ * @return an error uint16_t code if successfull;
+*/
 uint16_t initMemoryPool( void * const poolData, 
                          uint32_t const poolBlockSize,
                          uint32_t const poolBlockCount )
@@ -125,6 +129,36 @@ uint16_t initMemoryPool( void * const poolData,
         }
     }
 
+    return( retValue );
+}
+
+/**
+ * @brief Helper function to read the current pool count
+ * 
+ * @return Overall pool count
+ */ 
+int8_t getPoolCount( void )
+{
+    int8_t retValue = -1;
+    if( true == THIS._driverInitialized )
+    {
+        retValue = THIS._poolCount;
+    }
+    return ( retValue );
+}
+
+/** 
+ * @brief Helper function that gives the number of pools in the system that have been initialzied.
+ * 
+ * @return int8 initialized pool count
+ */
+int8_t getUninitializedPoolCount( void )
+{
+    int8_t retValue = -1;
+    if( true == THIS._driverInitialized )
+    {
+        retValue = THIS._poolsInUseCount;
+    }
     return( retValue );
 }
 
