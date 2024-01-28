@@ -19,6 +19,13 @@ extern "C" { // Access code from C++
     #define DEF_FALSE                                                      0x00
 #endif
 
+/**
+ * \brief macro to give an array length.
+*/
+#ifndef ARRAY_LENGTH
+#define ARRAY_LENGTH(X)                                  (sizeof(X)/sizeof(X[1]))
+#endif
+
 #ifndef MEMORY_POOLS_COUNT
     /** 
      * Configurable for a static library,
