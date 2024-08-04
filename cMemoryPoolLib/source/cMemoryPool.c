@@ -2,6 +2,7 @@
  * @file cMemoryPool.c
  * @brief Implementation of the memory pools
  * @author Anthony Garza
+ * @copyright All rights reserved 2024
 *************************************************/
 #include <stdint.h>
 #include <stdbool.h>
@@ -30,6 +31,8 @@ static sMemoryPoolDriverControl_t THIS = { NULL, MEMORY_POOLS_COUNT, false, 0 };
 /**
  * @brief Initialized overall control for the memory pool driver
  * 
+ * @param poolControls Pointer to the array of pool controls.
+ * @param poolCount Number of pools to be initialized.
  * @return an error uint16_t code if successfull;
  */ 
 uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls, 
@@ -48,9 +51,18 @@ uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls,
         }
         else
         {
-            THIS._controlArray = (sMemoryPoolControl_t*)controlArray;
+            if( 0 < poolCount)
+            {
+                THIS._controlArray = (sMemoryPoolControl_t*)controlArray;
+                THIS._driverInitialized = true;
+            }
+            else
+            {
+                retValue = MEMORY_POOL_INVALID_POOL_COUNT;
+            }
+            
         }
-        THIS._driverInitialized = true;
+        
     }
 
     return ( (uint16_t)retValue );
@@ -59,6 +71,9 @@ uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls,
 /**
  * @brief Initialize a memory pool with a given data array and size
  * 
+ * @param poolData Pointer to the data array to be used for the pool
+ * @param poolBlockSize Size of each block in the pool
+ * @param poolBlockCount Number of blocks in the pool
  * @return an error uint16_t code if successfull;
 */
 uint16_t initMemoryPool( void * const poolData, 
