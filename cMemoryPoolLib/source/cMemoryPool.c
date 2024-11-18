@@ -41,35 +41,40 @@ uint16_t initMemoryPools( sMemoryPoolControl_t ** poolControls,
     
     eMemoryPoolErrorCodes_t retValue = MEMORY_POOL_ERROR_NONE;
     printf("Init called \r\n");
+    // Only initialize if the driver is not currently initialized.
     if( false == THIS._driverInitialized )
     {
+        // If a valid poolControl structure is passed initialize that.
         if( NULL != poolControls )
         {
             THIS._controlArray = *poolControls;
             THIS._poolCount = poolCount;
-            THIS._poolsInUseCount = 0;            
+            THIS._poolsInUseCount = 0;
+            THIS._driverInitialized = true;            
         }
         else
         {
-            if( 0 < poolCount)
+            // If Null is passed use the internal control Array. 
+            if( ( MEMORY_POOLS_COUNT > poolCount ) && ( poolCount > 0 ) )
             {
                 THIS._controlArray = (sMemoryPoolControl_t*)controlArray;
                 THIS._driverInitialized = true;
+                THIS._poolCount = poolCount;
+                THIS._poolsInUseCount = 0;
             }
             else
             {
                 retValue = MEMORY_POOL_INVALID_POOL_COUNT;
-            }
-            
-        }
-        
+            }            
+        }        
     }
 
     return ( (uint16_t)retValue );
 }
 
 /**
- * @brief Initialize a memory pool with a given data array and size
+ * @brief Initialize a memory pool with a given data array and size. Memory pools should be in 
+ * smallest pool to largest pool order. 
  * 
  * @param poolData Pointer to the data array to be used for the pool
  * @param poolBlockSize Size of each block in the pool
@@ -116,9 +121,9 @@ uint16_t initMemoryPool( void * const poolData,
                         }
                         else
                         {
-                            if( THIS._controlArray[i]._poolBlockSizeBytes < poolBlockSize )
+                            if( THIS._controlArray[i]._poolBlockSizeBytes > poolBlockSize )
                             {
-                                for( int32_t j = ( THIS._poolCount - 2 ); j > i; j++ )
+                                for( int32_t j = ( THIS._poolCount - 2 ); j >= i; j--)
                                 {
                                     if( true == THIS._controlArray[j]._poolInfo._inUse )
                                     {

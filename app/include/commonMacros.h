@@ -32,7 +32,7 @@
  * \brief macro to give an array length.
 */
 #ifndef ARRAY_LENGTH
-#define ARRAY_LENGTH(X)                                  (sizeof(X)/sizeof([Z]))
+#define ARRAY_LENGTH(X)                                  (sizeof(X)/sizeof((X)[0]))
 #endif
 
 #endif  // COMMON_MACROS_H

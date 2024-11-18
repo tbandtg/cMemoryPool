@@ -16,7 +16,7 @@ uint8_t largePoolArray[LARGE_POOL_ARRAY_COUNT * LARGE_POOL_UNIT_SIZE_BYTES] = { 
 uint8_t extraLargePoolArray[EXTRA_LARGE_POOL_ARRAY_COUNT * EXTRA_LARGE_POOL_UNIT_SIZE_BYTES] = { 0x00 }; 
 
 
-/** Intentionaly too large */
+/** Can be configured to be different sizes for test. */
 sMemoryPoolControl_t  poolArrays[] = { 
     {
         ._poolInfo._inUse    = false,
@@ -93,10 +93,10 @@ sMemoryPoolControl_t  poolArrays[] = {
 */
 uint16_t testMemoryPool( void )
 {
-    uint16_t retValue = initMemoryPools( NULL, 0 );
+    uint16_t retValue = initMemoryPools( NULL, ARRAY_LENGTH(poolArrays) );
     if( 0u  == retValue  )
     {
-        for( int i = 0; i < sizeof( poolArrays ); i++ )
+        for( int i = 0; i < ARRAY_LENGTH(poolArrays); i++ )
         { 
             retValue = initMemoryPool( poolArrays[i]._poolInfo._pData, poolArrays[i]._poolBlockSizeBytes, poolArrays[i]._poolBlockCount );
         }
@@ -104,6 +104,6 @@ uint16_t testMemoryPool( void )
     }
     else
     {
-        printf("Initialization failee!");
+        printf("Initialization failed!");
     }
 }
