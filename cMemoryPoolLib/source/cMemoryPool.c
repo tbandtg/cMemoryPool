@@ -178,8 +178,15 @@ int8_t getUninitializedPoolCount( void )
     int8_t retValue = -1;
     if( true == THIS._driverInitialized )
     {
-        retValue = THIS._poolsInUseCount;
+        retValue = THIS._poolCount - THIS._poolsInUseCount;
+        
+        if( retValue < 0 )
+        {
+            retValue = 0;
+        }
     }
     return( retValue );
 }
+
+
 

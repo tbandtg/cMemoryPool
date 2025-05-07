@@ -67,6 +67,10 @@ extern int8_t getPoolCount( void );
 /** Get the count of uninitialized pools in the system */
 extern int8_t getUninitializedPoolCount( void );
 
+/** Get the count of free memory slots in each pool */
+extern size_t getFreeCount( size_t const minDataSize );
+
+
 #if defined(__cplusplus)
 }
 #endif
