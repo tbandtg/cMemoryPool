@@ -94,13 +94,14 @@ sMemoryPoolControl_t  poolArrays[] = {
 uint16_t testMemoryPool( void )
 {
     uint16_t retValue = initMemoryPools( NULL, ARRAY_LENGTH(poolArrays) );
-    if( 0u  == retValue  )
+    if(   == retValue  )
     {
         for( int i = 0; i < ARRAY_LENGTH(poolArrays); i++ )
         { 
             retValue = initMemoryPool( poolArrays[i]._poolInfo._pData, poolArrays[i]._poolBlockSizeBytes, poolArrays[i]._poolBlockCount );
         }
         printf("Initialize successfull");
+
     }
     else
     {
