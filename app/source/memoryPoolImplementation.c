@@ -87,7 +87,7 @@ sMemoryPoolControl_t  poolArrays[] = {
 #endif
     
 };
-    //smallPoolArray, mediumPoolArray, largePoolArray, extraLargePoolArray, NULL, NULL, NULL };
+
 /**
  * /brief Test harness for the memory pool implementation.
 */

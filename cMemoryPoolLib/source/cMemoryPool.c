@@ -19,9 +19,9 @@ static sMemoryPoolControl_t controlArray[ MEMORY_POOLS_COUNT ];
 typedef struct
 {
     sMemoryPoolControl_t * _controlArray; /* Array of control sturctures for the pools */
-    int8_t _poolCount;                     /* Number of pools also the length of the above array */
+    int8_t _poolCount;                     /* Number of pools in the control array. */
     bool  _driverInitialized;              /* Whether or not this driver has been initialized */
-    int8_t _poolsInUseCount;               /* How many pools have been initialized S*/
+    int8_t _poolsInUseCount;               /* How many pools have been initialized*/
 } sMemoryPoolDriverControl_t;
 
 /** THIS pointer to Array of Memory Pool controls */
@@ -134,7 +134,7 @@ uint16_t initMemoryPool( void * const poolData,
                                     
                                 }
                                 retValue = MEMORY_POOL_ERROR_NONE;
-                                /* This is the proper place for this new QUEUE*/
+                                /* This is the proper place for this new memory pool*/
                                 THIS._controlArray[i]._poolBlockCount = poolBlockCount;
                                 THIS._controlArray[i]._poolBlockSizeBytes = poolBlockSize;
                                 THIS._controlArray[i]._poolFreeCount = poolBlockCount;
@@ -178,15 +178,80 @@ int8_t getUninitializedPoolCount( void )
     int8_t retValue = -1;
     if( true == THIS._driverInitialized )
     {
-        retValue = THIS._poolCount - THIS._poolsInUseCount;
-        
-        if( retValue < 0 )
-        {
-            retValue = 0;
-        }
+        retValue = THIS._poolsInUseCount;
+  
     }
     return( retValue );
 }
 
+/**
+ * @brief function to malloc a block of memory from the pool. Will only use multiple if there are
+ * no single blocks available that will fit the requested space. 
+ * 
+ * @param pData Pointer to the data that is to be malloced
+ * @param sizeInBytes Size of the data to be malloced
+ * @param useMultiple Whether or not to use multiple blocks
+ * @param preferLargerSpace Whether or not to prefer larger space
+ * @return an error uint16_t code if unsuccessfull or NO_ERROR if successfull.
+ */
+uint16_t memoryPoolMalloc( void ** pData, 
+                           uint32_t const sizeInBytes, 
+                           bool const useMultiple )
+{
+    uint16_t retValue = MEMORY_POOL_NULL_PTR_ERROR;
+    bool singleBlockFound = false;
+    uint32_t blocksNeeded = 0;
+    if( NULL != pData )
+    {
+        retValue = MEMORY_POOL_DRIVER_NOT_INIT;
+        if( true == THIS._driverInitialized )
+        {
+            retValue = MEMORY_POOL_NO_FREE_POOL_LOCATION;
+            // Loop through and see if one is available with a larger block size.
+            for( int32_t i = 0; i < THIS._poolCount; i++ )
+            {
+                if( true == THIS._controlArray[i]._poolInfo._inUse )
+                {
+                    if( THIS._controlArray[i]._poolBlockSizeBytes >= sizeInBytes )
+                    {
+                        if( THIS._controlArray[i]._poolFreeCount > 0 )
+                        {
+                            *pData = THIS._controlArray[i]._poolInfo._pData;
+                            THIS._controlArray[i]._poolFreeCount--;
+                            singleBlockFound = true;
+                            retValue = MEMORY_POOL_ERROR_NONE;
+                            break;
+                        }
+                    }
+                }
+            }
 
-
+            // If no single larger block size is available. 
+            if( ( false == singleBlockFound ) && ( true == useMultiple ) )
+            {
+                // Loop through and see if one is available with a smaller block size.
+                for( int32_t i = 0; i < THIS._poolCount; i++ )
+                {
+                    if( true == THIS._controlArray[i]._poolInfo._inUse )
+                    {
+                        if( THIS._controlArray[i]._poolBlockSizeBytes < sizeInBytes )
+                        {
+                            // determine how many blocks are needed. 
+                            blocksNeeded = sizeInBytes / THIS._controlArray[i]._poolBlockSizeBytes;
+                            // Need at least as many pools as it takes and they must be contiguous.
+                            if( THIS._controlArray[i]._poolFreeCount > blocksNeeded )
+                            {
+                                *pData = THIS._controlArray[i]._poolInfo._pData;
+                                THIS._controlArray[i]._poolFreeCount--;
+                                singleBlockFound = true;
+                                retValue = MEMORY_POOL_ERROR_NONE;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return( retValue );
+}

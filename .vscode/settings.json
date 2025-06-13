@@ -2,6 +2,7 @@
     "files.associations": {
         "cmemorypool.h": "c",
         "memorypoolimplementation.h": "c",
-        "cmemorypoolprivate.h": "c"
+        "cmemorypoolprivate.h": "c",
+        "cmemorypoolconfig.h": "c"
     }
 }

@@ -17,11 +17,30 @@ extern "C" { // Access code from C++
 
 #include "cMemoryPoolConfig.h"
 
+/**
+ * @brief  Union of flags for the memory pool
+ */
+typedef union {
+    uint16_t _inUse: 1;
+    uint16_t _isMultiple: 1;
+    uint16_t _isFirst :1;
+    uint16_t _count : 13;
+} sMemoryPoolFlags_t;
+/**
+ *  Data structure ofr each member of the pool
+ * */
+typedef struct 
+{
+    /* pointer to one piece of data */
+    void * _pData;
+    sMemoryPoolFlags_t _flags;
+} sMemoryPoolMember_t;
+
 /** Data Structure for a memory Pool control object */
 typedef struct 
 {
-    /* data */
-    void * _pData;
+    /* pointer to an array of data */
+    sMemoryPoolMember_t * _pData;
     bool _inUse;
 } sMemoryPoolInfo_t;
 
@@ -55,8 +74,7 @@ extern uint16_t initMemoryPools( sMemoryPoolControl_t * *  poolControls,
 /** Grab a block */
 extern uint16_t memoryPoolMalloc( void ** pData, 
                                   uint32_t const sizeInBytes, 
-                                  bool const useMultiple, 
-                                  bool const preferLargerSpace );
+                                  bool const useMultiple );
 
 /** Free up a given block */
 extern uint16_t memoryPoolFree( void ** pData ); 
