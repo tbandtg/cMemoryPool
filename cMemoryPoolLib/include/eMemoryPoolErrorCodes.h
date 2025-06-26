@@ -8,7 +8,7 @@
 #if defined(__cplusplus)
 extern "C" { // Access code from C++
 #endif /* __cplusplus */
-#include "../public include/cMemoryPoolConfig.h"
+#include "../publicInclude/cMemoryPoolConfig.h"
 typedef enum
 {
     MEMORY_POOL_ERROR_NONE                       = 0x00,

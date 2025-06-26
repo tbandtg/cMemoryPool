@@ -6,8 +6,8 @@
 *************************************************/
 
 #include <gtest/gtest.h>
-#include "../public include/cMemoryPool.h"
-#include "../public include/cMemoryPoolConfig.h"
+#include "../publicInclude/cMemoryPool.h"
+#include "../publicInclude/cMemoryPoolConfig.h"
 #include "../include/eMemoryPoolErrorCodes.h"
 
 TEST( cMemoryPool, initMemoryPools )

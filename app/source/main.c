@@ -17,5 +17,5 @@
 int main( void )
 {
     uint16_t retValue = testMemoryPool();
-    return( printntHello() );
+    return( printHelloWorld() );
 }

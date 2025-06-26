@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "eMemoryPoolErrorCodes.h"
-#include "../public include/cMemoryPoolConfig.h"
-#include "../public include/cMemoryPool.h"
+#include "../publicInclude/cMemoryPoolConfig.h"
+#include "../publicInclude/cMemoryPool.h"
 #include "cMemoryPoolPrivate.h"
 #include <stdio.h>
 /** Array of controls */

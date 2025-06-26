@@ -3,6 +3,7 @@
         "cmemorypool.h": "c",
         "memorypoolimplementation.h": "c",
         "cmemorypoolprivate.h": "c",
-        "cmemorypoolconfig.h": "c"
+        "cmemorypoolconfig.h": "c",
+        "my_lib.h": "c"
     }
 }

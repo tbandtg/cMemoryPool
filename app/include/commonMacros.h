@@ -35,4 +35,8 @@
 #define ARRAY_LENGTH(X)                                  (sizeof(X)/sizeof((X)[0]))
 #endif
 
+#ifndef ERROR_NONE
+#define ERROR_NONE                                        0x00
+#endif
+
 #endif  // COMMON_MACROS_H

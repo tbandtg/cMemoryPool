@@ -101,6 +101,7 @@ uint16_t testMemoryPool( void )
             retValue = initMemoryPool( poolArrays[i]._poolInfo._pData, poolArrays[i]._poolBlockSizeBytes, poolArrays[i]._poolBlockCount );
         }
         printf("Initialize successfull");
+        if
 
     }
     else
